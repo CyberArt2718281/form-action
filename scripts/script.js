@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = function () {  // функция выполняет код внутри когда страница полностью загружена
     const main = document.querySelector('main');
     const form = document.getElementById('form');
     const fullName = document.getElementById('full-name');
@@ -22,31 +22,31 @@ window.onload = function () {
     buttonLogin.setAttribute('type', 'button');
     buttonLogin.textContent = 'Sign in';
     buttonLogin.style.display = 'none';
-    form.appendChild(buttonLogin);
+    form.appendChild(buttonLogin); //добавление элемента в блок формы
 
-    password.setAttribute('type', 'password');
-    repeatPassword.setAttribute('type', 'password');
+    password.setAttribute('type', 'password'); //добавление атрибута
+    repeatPassword.setAttribute('type', 'password'); //добавление атрибута
 
     fullName.addEventListener('input', (e) => {
         fullName.value = fullName.value.replace(/[0-9]/g, '');
-    });
+    }); // отслеживание чтобы пользователь не вводил цифры в поле имя
     username.addEventListener('input', (e) => {
         username.value = username.value.replace(/[, .]/g, '');
-    });
+    }); // отслеживание чтобы пользователь не вводил запятые и точки в поле username
     password.addEventListener('change', (e) => {
         if (password.value.length < 8) {
-            repeatPassword.setAttribute('disabled', 'disabled');
+            repeatPassword.setAttribute('disabled', 'disabled'); // поле повторить пароль будет задизейблено
             alert('Пароль должен быть не меньше 8 символов');
-        }
+        }  // если пароль меньше 8 символов вывод alert с сообщением и
         else{
-            repeatPassword.removeAttribute('disabled');
+            repeatPassword.removeAttribute('disabled'); // удление атрибута disabled
         }
     });
 
     repeatPassword.addEventListener('change', (e) => {
         if (password.value === repeatPassword.value) {
         } else {
-            alert('Пароли не совпадают');
+            alert('Пароли не совпадают'); // вывод сообщения если пароли не совпадают
         }
     });
 
@@ -60,13 +60,13 @@ window.onload = function () {
             isAgreed = false;
             console.log('Не согласен');
         }
-    });
+    }); // проверка чекбокса
 
     function clearForm(){
         arrayInput.forEach(input => {
             input.value = '';
         });
-    }
+    } // функция очистки формы
 
     function createLogin(){
         clearForm();
@@ -79,7 +79,7 @@ window.onload = function () {
         login.style.display = 'none';
         button.style.display = 'none';
         labelPassword.style.marginBottom = '40px';
-    }
+    } // функция создания фомы
 
     function isUserInput(){
         if(username.value && password.value){
@@ -88,30 +88,30 @@ window.onload = function () {
         else{
             alert('Вы не ввели username или password');
         }
-    }
+    } // простенькая функция на проверку введен ли пароль и имя
 
     function buttonUserCreate(){
-        if (fullName.value && username.value && email.value && password.value && repeatPassword.value && isAgreed) {
-            const popup = document.createElement('div');
-            popup.classList.add('popup');
-            popup.style.display = 'flex';
-            const popupTitle = document.createElement('span');
-            popupTitle.classList.add('popup-title');
-            popupTitle.textContent = 'Дорогой пользователь!';
-            const popupDescription = document.createElement('p');
-            popupDescription.classList.add('popup-description');
-            popupDescription.textContent = 'На вашу почту выслана ссылка, перейдите по ней, чтобы завершить регистрацию';
+        if (fullName.value && username.value && email.value && password.value && repeatPassword.value && isAgreed) { // если все поля введены создасться модальное окно с текстом
+            const popup = document.createElement('div'); // создание элемента div
+            popup.classList.add('popup'); // добавление класса элементу popup
+            popup.style.display = 'flex'; // добавление свойства display
+            const popupTitle = document.createElement('span'); //создание элемента span
+            popupTitle.classList.add('popup-title'); // добавление класса
+            popupTitle.textContent = 'Дорогой пользователь!'; // добавление текста в элемент
+            const popupDescription = document.createElement('p');// создание эенлмента
+            popupDescription.classList.add('popup-description'); // добавление класса
+            popupDescription.textContent = 'На вашу почту выслана ссылка, перейдите по ней, чтобы завершить регистрацию'; // добавление текста в элементу
             const btnPopUp = document.createElement('button');
             btnPopUp.classList.add('popup-btn');
-            btnPopUp.setAttribute('type', 'button');
+            btnPopUp.setAttribute('type', 'button'); // добавление атрибута с type=button
             btnPopUp.textContent = 'ОК';
 
-            popup.append(popupTitle, popupDescription, btnPopUp);
-            main.appendChild(popup);
+            popup.append(popupTitle, popupDescription, btnPopUp); // добавление элементов в родительский элмент popup
+            main.appendChild(popup); // добавление popup в элемент main
 
-            login.removeEventListener('click', loginClick);
+            login.removeEventListener('click', loginClick); // удаление обработчика клика с функцией loginclick
 
-            btnPopUp.addEventListener('click', (e) => {
+            btnPopUp.addEventListener('click', (e) => { // назначение обработчика события клика на элемент кнопки
                 popup.style.display = 'none';
                 clearForm();
                 createLogin();
@@ -121,7 +121,7 @@ window.onload = function () {
                 });
             });
 
-        } else {
+        } else { // проверка на наличие значения в поле
             if (fullName.value === '') {
                 alert('Введите ФИО');
             } else if (username.value === '') {
@@ -138,17 +138,17 @@ window.onload = function () {
         }
     }
 
-    function loginClick(e) {
-        createLogin();
-        buttonLogin.addEventListener('click', (e) => {
-            isUserInput();
-            clearForm();
+    function loginClick() { // функция создания формы входа
+        createLogin(); // функция содания формы
+        buttonLogin.addEventListener('click', (e) => { // навешивание события на кнопку формы входа
+            isUserInput(); // проверка на пароль
+            clearForm(); // удаление формы
         });
     }
 
     button.addEventListener('click', (e) => {
-        buttonUserCreate();
+        buttonUserCreate(); //  функция регистрации пользователя
     });
 
-    login.addEventListener('click', loginClickHandler);
+    login.addEventListener('click', loginClick); // переключение на форму входа
 }
