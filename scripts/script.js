@@ -119,9 +119,6 @@ window.onload = function () {  // функция выполняет код вн�
                     isUserInput();
                     clearForm();
                 });
-
-
-                
             });
 
         } else { // проверка на наличие значения в поле
