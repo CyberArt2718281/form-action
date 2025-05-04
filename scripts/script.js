@@ -152,4 +152,5 @@ window.onload = function () {  // функция выполняет код вн�
 
     login.addEventListener('click', loginClick); // переключение на форму входа
     console.log('final');
+    console.log('end');
 }
