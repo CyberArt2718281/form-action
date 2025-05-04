@@ -150,5 +150,6 @@ window.onload = function () {  // функция выполняет код вн�
         buttonUserCreate(); //  функция регистрации пользователя
     });
 
+
     login.addEventListener('click', loginClick); // переключение на форму входа
 }
