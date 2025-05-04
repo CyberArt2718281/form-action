@@ -58,7 +58,7 @@ window.onload = function () {  // функция выполняет код вн�
             console.log('Согласен');
         } else {
             isAgreed = false;
-            console.log('Не согласен');
+            console.log('Не согласен'); // вывод сообщения
         }
     }); // проверка чекбокса
 
