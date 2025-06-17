@@ -29,7 +29,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding-right: 46px;
-    padding-left: 63px;
+    padding-left: 64px;
 }
 
 .main-container {
@@ -45,7 +45,7 @@ body {
     font-size: 36px;
     color: #000000;
     margin-bottom: 7px;
-    height: 56px;
+    height: 57px;
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 .main-text-form {
-    max-width: 496px;
+    max-width: 497px;
 }
 
 .form {
@@ -71,7 +71,7 @@ body {
 .input-title {
     font-size: 16px;
     color: #C6C6C4;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .input {
@@ -79,7 +79,7 @@ body {
     width: 452px;
     outline: none;
     font-size: 20px;
-    line-height: 27px;
+    line-height: 28px;
     color: #323232;
     border: none;
     transition: border-bottom 0.3s ease;
@@ -241,10 +241,10 @@ body {
 
 .popup-btn {
     width: 210px;
-    padding: 20px;
+    padding: 21px;
     color: black;
     text-align: center;
-    font-size: 20px;
+    font-size: 21px;
     outline: none;
     border: none;
     border-radius: 40px;
@@ -258,6 +258,16 @@ body {
     transform: scale(1.05);
 }
 
+.correct{
+    color: #64e364;
+    font-size: 20px;
+    display: none;
+}
+.uncorrect{
+    color: #e82222;
+    font-size: 20px;
+    display: none;
+}
 @keyframes fadeIn {
     from {
         opacity: 0;
