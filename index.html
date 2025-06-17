@@ -24,30 +24,51 @@
             <form action="" id="form" class="form">
                 <label class="label" id="label-full-name">
                     <span class="input-title">Full Name</span>
-                    <input type="text" id="full-name" class="input">
+                    <span class="correct correctName">Full name is correct</span>
+                    <span class="uncorrect uncorrectName">Full name is uncorrect</span>
+                    <input type="text" id="full-name" class="input" placeholder="Ivanov">
                 </label>
-                <label class="label">
+                <label class="label" id="label-userName">
                     <span class="input-title">Your username</span>
-                    <input type="text" id="username" class="input">
+                    <span class="correct correctUserName">Username is correct</span>
+                    <span class="uncorrect uncorrectUserName">Username is uncorrect</span>
+                    <input type="text" id="username" class="input" placeholder="user1234">
+                </label>
+                <label class="label" id="label-userNameSignIn" style="display: none">
+                    <span class="input-title">Your username SingIn</span>
+                    <span class="uncorrect notFoundUserName" >username is not found</span>
+                    <input type="text" id="usernameSignIn" class="input" placeholder="user1234">
                 </label>
                 <label class="label" id="label-email">
                     <span class="input-title">E-mail</span>
-                    <input type="email" id="email" class="input">
+                    <span class="correct correctEmail">Email is correct</span>
+                    <span class="uncorrect uncorrectEmail">Email is uncorrect</span>
+                    <input type="email" id="email" class="input" placeholder="user124@maul.ru">
                 </label>
                 <label class="label eyes" id="label-password">
                     <span class="input-title">Password</span>
-                    <input type="password" id="password" class="input">
+                    <span class="correct correctPassword">Password is correct</span>
+                    <span class="uncorrect uncorrectPassword" >Password is uncorrect</span>
+                    <input type="password" id="password" class="input" placeholder="User_123&45">
+                </label>
+
+                <label class="label eyes" id="label-passwordSingIn" style="display: none">
+                    <span class="input-title">Password SignIn</span>
+                    <span class="uncorrect invalidPassword">Invalid password</span>
+                    <input type="password" id="passwordSignIn" class="input" placeholder="User_123&45">
                 </label>
                 <label class="label eyes" id="label-repeat">
                     <span class="input-title">Repeat Password</span>
-                    <input type="password" id="repeat-password" class="input">
+                    <span class="correct correctRepeatPassword">Repeat Password is correct</span>
+                    <span class="uncorrect uncorrectRepeatPassword">Repeat Password is uncorrect</span>
+                    <input type="password" id="repeat-password" class="input" placeholder="User_123&45">
                 </label>
                 <label class="label-checkbox" id="label-checkbox">
                     <input type="checkbox" class="checkbox" id="checkbox">
                     <span class="checkbox-title">Agree to our Terms of Service and Privacy Statement</span>
                 </label>
                 <div class="footer-form">
-                    <button type="button" class="btn" id="btn">Sign Up</button>
+                    <button type="button" class="btn" id="btnSignIn" >Sign Up</button>
                     <a href="#" class="login-link" id="login">Already have an account?</a>
                 </div>
             </form>
