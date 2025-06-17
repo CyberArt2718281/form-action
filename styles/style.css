@@ -258,6 +258,16 @@ body {
     transform: scale(1.05);
 }
 
+.correct{
+    color: #64e364;
+    font-size: 20px;
+    display: none;
+}
+.uncorrect{
+    color: #e82222;
+    font-size: 20px;
+    display: none;
+}
 @keyframes fadeIn {
     from {
         opacity: 0;
