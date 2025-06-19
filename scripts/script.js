@@ -1,4 +1,5 @@
-window.onload = function () {  // функция выполняет код внутри когда страница полностью загружена
+window.onload = function () {
+    // функция выполняет код внутри когда страница полностью загружена
     const main = document.querySelector('main');
     const form = document.getElementById('form');
     const fullName = document.getElementById('full-name');
@@ -23,6 +24,7 @@ window.onload = function () {  // функция выполняет код вн�
 
     const USER_PAGE_KEY = 'userCurrentPage';
     const USER_SESSION_STORE_KEY = 'userSession';
+    const USERS_STORAGE_KEY = 'usersArray'; // Ключ для хранения массива пользователей
     const correctElement = document.querySelectorAll('.correct');
     const uncorrectElement = document.querySelectorAll('.uncorrect');
 
@@ -33,6 +35,23 @@ window.onload = function () {  // функция выполняет код вн�
     // переменные хранят текущее состояние страницы из localStorage и имя авторизированного из sessionStorage пользователя
     const currentPage = localStorage.getItem(USER_PAGE_KEY);
     const sessionPage = sessionStorage.getItem(USER_SESSION_STORE_KEY);
+
+    // Функция для получения массива пользователей из localStorage
+    function getUsersArray() {
+        const users = localStorage.getItem(USERS_STORAGE_KEY);
+        return users ? JSON.parse(users) : [];
+    }
+
+    // Функция для сохранения массива пользователей в localStorage
+    function saveUsersArray(users) {
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+    }
+
+    // Функция для поиска пользователя по username
+    function findUserByUsername(username) {
+        const users = getUsersArray();
+        return users.find(user => user.userName === username);
+    }
 
     // сохранение в localStorage страницы входа или выхода так же если пользователь уже авторизирован он будет при обновлении страницы автоматически переброшен в личный кабинет
     function getCurrentPage() {
@@ -59,7 +78,7 @@ window.onload = function () {  // функция выполняет код вн�
     const validationObject = {
         fullName: /^[А-ЯЁA-Z][а-яёa-z]+$/,
         userName: /[!@#$%^&*()+=[\]{};':"\\|,.<>/?]/,
-        email: /^\w+@mail\.(com|ru)$/,
+        email: /^\w+@(mail|gmail|ynadex|google)\.\w+$/,
         password: /^(?=.*[A-ZА-ЯЁ])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/g,
     }
 
@@ -74,7 +93,18 @@ window.onload = function () {  // функция выполняет код вн�
     let correctPassword = false;
     // значение состояния checkbox
     let isAgreed = false;
+    function resetValidateState(){
+        let isValidateFullName = false;
+        let isValidateUserName = false;
+        let isValidateEmail = false;
+        let isValidatePassword = false;
+        let isValidateRepeatPassword = false;
 
+        // значение состояния пароля для повтора пароль
+        let correctPassword = false;
+        // значение состояния checkbox
+        let isAgreed = false;
+    }
     // обработчики input
     fullName.addEventListener('input', (e) => {
         const correctElement = document.querySelector('.correctName');
@@ -228,19 +258,20 @@ window.onload = function () {  // функция выполняет код вн�
     // обработчик кнопки регистрации
     buttonSignUp.addEventListener('click', () => {
         if (isValidateFullName && isValidateUserName && isValidateEmail && isValidatePassword && isValidateRepeatPassword && correctPassword && isAgreed) {
-            if (localStorage.getItem(username.value)) {
-                const store = JSON.parse(localStorage.getItem(username.value));
-                if (store.password === password.value) {
+            const existingUser = findUserByUsername(username.value);
+
+            if (existingUser) {
+                if (existingUser.password === password.value) {
                     sessionStorage.setItem(USER_SESSION_STORE_KEY, `${fullName.value}`);
-                    personalRoom(store.fullName);
-                }else{
+                    personalRoom(existingUser.fullName);
+                } else {
                     let userName = username.value;
                     createLogin(userName);
                     changedUserData();
                 }
             } else {
                 sessionStorage.setItem(USER_SESSION_STORE_KEY, `${fullName.value}`);
-                setLocalStorageUser(username.value);
+                setLocalStorageUser();
                 createPopup(fullName.value);
             }
         }
@@ -251,7 +282,10 @@ window.onload = function () {  // функция выполняет код вн�
     });
     // обработчик кнопки выхода из лк
     buttonExit.addEventListener('click',
-        fromRoomToRegister
+        ()=>{
+        fromRoomToRegister();
+        sessionStorage.removeItem(USER_SESSION_STORE_KEY);
+        }
     )
 
     // функция личного кабинета
@@ -277,22 +311,28 @@ window.onload = function () {  // функция выполняет код вн�
         checkbox.checked = false;
     }
 
-    // функция для добавления в localStorage
-    function setLocalStorageUser(username) {
-        const USER_KEY_STORE = `${username}`;
-        localStorage.setItem(USER_KEY_STORE, JSON.stringify({
-            fullName: fullName.value,
-            userName: username,
-            email: email.value,
-            password: password.value,
-        }));
-    }
+    // функция для добавления пользователя в массив в localStorage
+    function setLocalStorageUser() {
+        const users = getUsersArray();
 
+        // Проверяем, нет ли уже пользователя с таким username
+        if (!users.some(user => user.userName === username.value)) {
+            users.push({
+                fullName: fullName.value,
+                userName: username.value,
+                email: email.value,
+                password: password.value,
+            });
+
+            saveUsersArray(users);
+        }
+    }
 
     /////////////////////////////////
     // функции для создания страницы регистрации и входа
     function createLogin(userNameInputValue='') {
         clearForm();
+        resetValidateState();
         const userName = userNameInputValue || '';
         localStorage.setItem(USER_PAGE_KEY, 'login');
         correctElement.forEach(item => item.style.display = 'none');
@@ -325,6 +365,7 @@ window.onload = function () {  // функция выполняет код вн�
     // функция создания страницы Регистрации
     function createRegister() {
         clearForm();
+        resetValidateState();
         localStorage.setItem(USER_PAGE_KEY, 'registration');
         document.querySelector('.uncorrectPassword').textContent = 'Password is uncorrect';
         correctElement.forEach(item => item.style.display = 'none');
@@ -347,6 +388,7 @@ window.onload = function () {  // функция выполняет код вн�
     }
     // функция для выхода из личного кабинета на страницу регистрации
     function fromRoomToRegister() {
+        resetValidateState();
         form.style.display = 'flex';
         document.querySelector('.main-description').style.display = 'none';
         document.querySelector('.main-img').style.display = 'block';
@@ -384,20 +426,20 @@ window.onload = function () {  // функция выполняет код вн�
         });
     }
 
-
-    // функция для проверки пользователя из LocalStorage
+    // функция для проверки пользователя из массива в LocalStorage
     function changedUserData() {
         const invalidPassword = document.querySelector('.invalidPassword');
         const userNotFound = document.querySelector('.notFoundUserName');
 
-        const store = JSON.parse(localStorage.getItem(userNameSignIn.value)) || '';
-        if (store) {
+        const user = findUserByUsername(userNameSignIn.value);
+
+        if (user) {
             userNotFound.style.display = 'none';
             if (userPasswordSignIn.value) {
-                if (store.password === userPasswordSignIn.value) {
-                    const fullName = store.fullName.toString();
+                if (user.password === userPasswordSignIn.value) {
+                    const fullName = user.fullName.toString();
                     invalidPassword.style.display = 'none';
-                    sessionStorage.setItem(USER_SESSION_STORE_KEY, `${store.fullName}`);
+                    sessionStorage.setItem(USER_SESSION_STORE_KEY, `${user.fullName}`);
                     personalRoom(fullName);
                 } else {
                     invalidPassword.textContent = 'Invalid Password';
@@ -410,9 +452,7 @@ window.onload = function () {  // функция выполняет код вн�
         } else {
             userNotFound.style.display = 'block';
         }
-
     }
-
 
     // обработчики ссылок на страницы регистрации и входа
     registration.addEventListener('click', createRegister);
